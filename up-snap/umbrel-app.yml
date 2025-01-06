@@ -1,6 +1,6 @@
 manifestVersion: 1
-id: up-snap
-name: up-snap
+id: upsnap
+name: upsnap
 tagline: Easily Manage Wake-on-LAN
 icon: images/icon.png
 category: Files & Productivity
