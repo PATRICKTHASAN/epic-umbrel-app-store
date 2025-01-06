@@ -1,18 +1,15 @@
 manifestVersion: 1
 id: Upsnap-wake-on-lan
 name: UpSnap
-tagline: Replace this tagline with your app's tagline
+tagline: Easily Manage Wake-on-LAN
 icon: images/icon.png
 category: Files & Productivity
 version: "1.0.0"
 port: 4000
 description: >-
   Upsnap is a wake on lan interface for docker.
-
-
-  You can also add newlines!
-
-developer: Patrick
+  
+developer: seriousm4x
 website: https://github.com/seriousm4x
 submitter: Patrick indran
 submission: https://github.com/seriousm4x/UpSnap
