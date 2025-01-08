@@ -10,6 +10,7 @@ services:
 
   upsnap:
     container_name: upsnap
+    image: ghcr.io/seriousm4x/upsnap:4 # images are also available on docker hub: seriousm4x/upsnap:4
     build:
       dockerfile: Dockerfile.dev
     network_mode: host
