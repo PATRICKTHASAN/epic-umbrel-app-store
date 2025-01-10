@@ -1,16 +1,14 @@
 version: "3.7"
 
 services:
-
   app_proxy:
     environment:
-      # The format here is: <app-id>_<docker-service-name>_1
-      APP_HOST: umbrel-community-app-store_upsnap_1
+      # The format here is: <app-id>_<service-name>_1
+      APP_HOST: upsnap_server_1
       APP_PORT: 5000
 
   upsnap:
     image: ghcr.io/seriousm4x/upsnap:4
-    network_mode: host
     restart: unless-stopped
     volumes:
       - ${APP_DATA_DIR}/data:/app/pb_data
@@ -20,3 +18,5 @@ services:
       UPSNAP_SCAN_RANGE: 192.168.1.0/24 # Adjust to your network range
     user: "1000:1000"
     init: true
+    ports:
+      - "5000:5000" # Expose port 5000
