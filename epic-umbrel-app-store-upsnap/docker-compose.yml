@@ -5,33 +5,18 @@ services:
   app_proxy:
     environment:
       # The format here is: <app-id>_<docker-service-name>_1
-      APP_HOST: upsnap_server_1
+      APP_HOST: umbrel-community-app-store_upsnap_1
       APP_PORT: 5000
 
   upsnap:
-    container_name: upsnap
-    image: ghcr.io/seriousm4x/upsnap:4 # images are also available on docker hub: seriousm4x/upsnap:4
+    image: ghcr.io/seriousm4x/upsnap:4
     network_mode: host
     restart: unless-stopped
     volumes:
-      - ./data:/app/pb_data
-    # To use a non-root user, create the mountpoint first before starting
-    # the container (mkdir data) so that it has the right permissions.
-    # user: 1000:1000
+      - ${APP_DATA_DIR}/data:/app/pb_data
     environment:
-      - TZ=Europe/Berlin # Set container timezone for cron schedules
-      # - UPSNAP_INTERVAL=@every 10s # Sets the interval in which the devices are pinged
-      - UPSNAP_SCAN_RANGE=192.168.1.0/24 # Scan range is used for device discovery on local network
-      # - UPSNAP_WEBSITE_TITLE=Custom name # Custom website title
-    dns:
-      - 192.168.1.1
-      - 192.168.1.22
-    # You can change the listen IP:port inside the container like this:
-    # entrypoint: /bin/sh -c "./upsnap serve --http 0.0.0.0:5000"
-    healthcheck:
-      test: curl -fs "http://localhost:5000/api/health" || exit 1
-      interval: 10s
-      retries: 3
-      timeout: 5s
-    # Install custom packages for shutdown if needed:
-    # entrypoint: /bin/sh -c "apk update && apk add --no-cache <YOUR_PACKAGE> && rm -rf /var/cache/apk/* && ./upsnap serve --http 0.0.0.0:8090"
+      TZ: Europe/Copenhagen # Adjust to your timezone
+      UPSNAP_INTERVAL: "@every 10s" # Interval for device pings
+      UPSNAP_SCAN_RANGE: 192.168.1.0/24 # Adjust to your network range
+    user: "1000:1000"
+    init: true
