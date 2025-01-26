@@ -3,19 +3,19 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: upsnap_upsnap_1  # Follows Umbrel's naming convention :cite[8]
+      APP_HOST: localhost  # Fixed host resolution
       APP_PORT: 5000
 
   upsnap:
     image: ghcr.io/seriousm4x/upsnap:4
-    container_name: upsnap
-    network_mode: host  # Required for Wake-on-LAN functionality :cite[5]:cite[10]
     restart: unless-stopped
     volumes:
-      - ${APP_DATA_DIR}/data:/app/pb_data  # Persistent storage path :cite[8]
+      - ${APP_DATA_DIR}/data:/app/pb_data:Z  # Added ":Z" for permissions
     environment:
       TZ: Europe/Copenhagen
       UPSNAP_INTERVAL: "@every 10s"
       UPSNAP_SCAN_RANGE: 192.168.1.0/24
-    user: "1000:1000"  # Avoids root privileges for security :cite[8]
+    user: "1000:1000"
     init: true
+    ports:
+      - "5000:5000"  # Required for app_proxy access
