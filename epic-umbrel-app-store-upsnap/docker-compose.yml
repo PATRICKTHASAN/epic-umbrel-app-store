@@ -6,7 +6,7 @@ services:
       # Reference by service name instead of container name
       APP_HOST: server
       APP_PORT: 3000
-
+      
   server:
     image: ghcr.io/seriousm4x/upsnap:3.7  # Changed to match version 3.7
     network_mode: host
