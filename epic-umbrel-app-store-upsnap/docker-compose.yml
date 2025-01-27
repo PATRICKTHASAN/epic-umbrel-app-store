@@ -9,8 +9,10 @@ services:
 
   server:
     image: ghcr.io/seriousm4x/upsnap:4
+    command:
+      - './upsnap serve --http 0.0.0.0:5000'
+    restart: on-failure
     network_mode: host
-    restart: unless-stopped
     volumes:
       - ${APP_DATA_DIR}/data:/app/pb_data
     environment:
@@ -19,8 +21,7 @@ services:
       - UPSNAP_SCAN_RANGE=192.168.1.0/24
       - UPSNAP_SCAN_TIMEOUT=500ms
       - UPSNAP_PING_PRIVILEGED=true
-      - UPSNAP_WEBSITE_TITLE=Custom Network Scanner
-    healthcheck:
-      test: curl -fs "http://localhost:5000/api/health" || exit 1
-      interval: 10s
-      retries: 3
+      - UPSNAP_WEBSITE_TITLE=UpSnap
+    cap_add:
+      - NET_ADMIN
+    container_name: epic-umbrel-app-store-upsnap_server_1
