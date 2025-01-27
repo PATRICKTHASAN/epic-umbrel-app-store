@@ -1,12 +1,6 @@
 version: '3.7'
 
 services:
-  app_proxy:
-    environment:
-      # The format here is: <app-id>_<docker-service-name>_1
-      APP_HOST: epic-umbrel-app-store-upsnap_server_1
-      APP_PORT: 5000
-
   server:
     image: ghcr.io/seriousm4x/upsnap:4
     command:
