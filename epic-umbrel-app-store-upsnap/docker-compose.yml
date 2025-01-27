@@ -1,24 +1,26 @@
-version: "3.7"
+version: '3.7'
 
 services:
   app_proxy:
     environment:
-      APP_HOST: upsnap  # Service name, not localhost
+      # The format here is: <app-id>_<docker-service-name>_1
+      APP_HOST: epic-umbrel-app-store-upsnap_server_1
       APP_PORT: 5000
 
-  upsnap:
+  server:
     image: ghcr.io/seriousm4x/upsnap:4
+    network_mode: host
     restart: unless-stopped
-    network_mode: bridge  # Required for Umbrel's proxy
     volumes:
-      - ${APP_DATA_DIR}/data:/app/pb_data:Z
+      - ${APP_DATA_DIR}/data:/app/pb_data
     environment:
-      TZ: Europe/Copenhagen
-      UPSNAP_INTERVAL: "@every 10s"
-      UPSNAP_SCAN_RANGE: 192.168.1.0/24
-    user: "1000:1000"
-    init: true
-    ports:
-      - "5000:5000"
-    cap_add:  # Enable Wake-on-LAN
-      - NET_ADMIN
+      - TZ=Europe/Berlin
+      - UPSNAP_INTERVAL=@every 10s
+      - UPSNAP_SCAN_RANGE=192.168.1.0/24
+      - UPSNAP_SCAN_TIMEOUT=500ms
+      - UPSNAP_PING_PRIVILEGED=true
+      - UPSNAP_WEBSITE_TITLE=Custom Network Scanner
+    healthcheck:
+      test: curl -fs "http://localhost:5000/api/health" || exit 1
+      interval: 10s
+      retries: 3
